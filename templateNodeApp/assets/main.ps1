@@ -2,8 +2,8 @@
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 [Console]::InputEncoding = [System.Text.Encoding]::UTF8
 $PSDefaultParameterValues['*:Encoding'] = 'utf8'
-chcp 65001 | Out-Null
-Import-Module "$PSScriptRoot\adicionarFiles.psm1" -Force
+Import-Module "$PSScriptRoot\module\viteInstal.psm1" -Force
+Import-Module "$PSScriptRoot\module\adicionarFiles.psm1" -Force
 function criarPastas() {
     param(
         [string]$nomeProjeto,
@@ -23,7 +23,7 @@ function criarPastas() {
         New-Item -Path $caminho -Name $nomeProjeto -ItemType Directory | Out-Null
     }
     # Cria as subpastas
-    $pastas = @("Controllers", "Models", "Views", "Routes", "Services", "Helpers", "Public", "Config", "Database", "Middleware")
+    $pastas = @("Controllers", "Models", "Views", "Routes", "Services", "Helpers", "Config", "Database", "Middleware")
     foreach ($pasta in $pastas) {
         New-Item -Path "$caminho\$nomeProjeto" -Name "$pasta" -ItemType Directory | Out-Null 
     }
@@ -33,9 +33,28 @@ function criarPastas() {
     $escolha = $host.UI.PromptForChoice("Extensão", "Selecione a linguagem do projeto:", $opcoes, 0)
     Write-Host "O projeto será desenvolvido com base em $($extensoes[$escolha])"
     $extensaoEscolhida = $extensoes[$escolha]
+    
     # adiciona app.js ou app.ts
     $nomeArquiApp = "app.$extensaoEscolhida"
+
+    # adiciona os arquivos na pasta do projeto
     adicionarFiles -caminho $caminho -nomeProjeto $nomeProjeto -nomeArquiApp $nomeArquiApp
+
+    # Pergunta o template que será utilizado
+    $templates = @("vanilla", "vanilla-ts", "vue", "vue-ts", "react", "react-ts", "preact", "lit", "svelte", "solid", "qwik")
+    $opcoesTemplates = for ($i = 0; $i -lt $templates.Count; $i++) {
+        New-Object System.Management.Automation.Host.ChoiceDescription ("&$($i + 1) $($templates[$i])", $templates[$i])
+    }
+    $escolha = $host.UI.PromptForChoice("Template", "Selecione o template do projeto:", $opcoesTemplates, 0)
+    $templateEscolhido = $templates[$escolha]
+    Write-Host "O projeto será desenvolvido com base em $($templates[$escolha])" -ForegroundColor Yellow
+
+    # nageva para a pasta do projeto
+    # Navega para o caminho de instalacao
+    Set-Location -Path "$caminho\$nomeProjeto"
+    # inicia o vite
+    instalarVite  $nomeProjeto $templateEscolhido
+    Write-Host "Intalado Vite com sucesso!`n" -ForegroundColor Green
     # Fim do processo
     Write-Host "Projeto: $nomeProjeto criado com sucesso!" -ForegroundColor  Green
 }
