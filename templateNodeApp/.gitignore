@@ -1,9 +1,6 @@
 ﻿# Arquivos de ambiente
 .env
 
-# Pasta de assets/recursos
-assets/
-
 # Arquivos temporarios do Windows
 *.log
 *.tmp

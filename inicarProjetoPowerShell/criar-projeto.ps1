@@ -212,6 +212,29 @@ assets/
 *.psm1_disabled
 "@
 
+# ============================================
+# Conteudo do .env
+# ============================================
+$envContent = @"
+# Arquivos de ambiente
+# Configuracoes do servidor
+PORT=3000
+
+# SQLITE, MYSQL, POSTGRES
+DB_HOST=SQLITE
+DB_PORT=
+DB_USER=
+DB_PASSWORD=
+DB_NAME=
+
+# Configuracoes do docker
+DB_DOCKER_NAME=
+DB_DOCKER_PORT=
+DB_DOCKER_USER=
+DB_DOCKER_PASSWORD=
+DB_DOCKER_DB=
+"@
+
 # Cria os arquivos
 Write-Host "  -> Criando README.md..." -ForegroundColor White
 $readmeContent | Out-File -FilePath (Join-Path $caminhoProjeto "README.md") -Encoding UTF8 -Force
@@ -234,6 +257,9 @@ $buildBatContent | Out-File -FilePath (Join-Path $caminhoProjeto "dist\build.bat
 Write-Host "  -> Criando .gitignore..." -ForegroundColor White
 $gitignoreContent | Out-File -FilePath (Join-Path $caminhoProjeto ".gitignore") -Encoding UTF8 -Force
 
+Write-Host "  -> Criando .env..." -ForegroundColor White
+$envContent | Out-File -FilePath (Join-Path $caminhoProjeto ".env") -Encoding UTF8 -Force
+
 # Mensagem de sucesso
 Write-Host ""
 Write-Host "=========================================" -ForegroundColor Green
@@ -251,11 +277,13 @@ Write-Host "  - README.md" -ForegroundColor Gray
 Write-Host "  - main.ps1" -ForegroundColor Gray
 Write-Host "  - build.bat" -ForegroundColor Gray
 Write-Host "  - .gitignore" -ForegroundColor Gray
+Write-Host "  - .env" -ForegroundColor Gray
 Write-Host ""
 Write-Host "Proximos passos:" -ForegroundColor Yellow
 Write-Host "  1. Abra o arquivo main.ps1 e comece a codar!" -ForegroundColor White
 Write-Host "  2. Execute build.bat para testar seu script" -ForegroundColor White
 Write-Host "  3. Atualize o README.md com a documentacao" -ForegroundColor White
+Write-Host "  4. Atualize o .env com as configuracoes necessarias" -ForegroundColor White
 Write-Host ""
 
 # Pergunta se quer abrir a pasta do projeto
