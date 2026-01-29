@@ -60,9 +60,9 @@ $ node app.js
 "@
     Write-Host "Iniciando criacao dos arquivos . . . `n"
     # Adicionando os arquivos a raiz do projeto
-    New-Item -ItemType File -Path "$caminho\$nomeProjeto" -Name $nomeArquiApp -Value $dadosAppJs | Out-Null
+    New-Item -ItemType File -Path "$caminho" -Name $nomeArquiApp -Value $dadosAppJs | Out-Null
     Write-Host "Criado $nomeArquiApp ..." -ForegroundColor White
-    New-Item -ItemType File -Path "$caminho\$nomeProjeto" -Name "README.md" -Value $readmeMd | Out-Null
+    New-Item -ItemType File -Path "$caminho" -Name "README.md" -Value $readmeMd | Out-Null
     Write-Host "Criado README.md ...`n" -ForegroundColor White
     Write-Host "Arquivos criados:`n" -ForegroundColor Yellow
     foreach ($arquivo in @($nomeArquiApp, "README.md")) {

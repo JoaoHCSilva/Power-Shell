@@ -27,7 +27,6 @@ function criarPastas() {
     $pastas = @("Controllers", "Models", "Views", "Routes", "Services", "Helpers", "Config", "Database", "Middleware")
     foreach ($pasta in $pastas) {
         New-Item -Path "$caminho\$nomeProjeto" -Name "$pasta" -ItemType Directory | Out-Null 
-        Write-Host "Criando a pasta $pasta...`n" -ForegroundColor White
     }
 
 
@@ -36,7 +35,7 @@ function criarPastas() {
     # extensão do projeto
     $extensoes = @("js", "ts")
     $opcoes = [System.Management.Automation.Host.ChoiceDescription[]] @("&JavaScript", "&TypeScript")
-    $escolha = $host.UI.PromptForChoice("Selecione a linguagem do projeto:", $opcoes, 0)
+    $escolha = $host.UI.PromptForChoice("","Selecione a linguagem do projeto:", $opcoes, 0)
     Write-Host "O projeto será desenvolvido com base em $($extensoes[$escolha])"
     $extensaoEscolhida = $extensoes[$escolha]
     
