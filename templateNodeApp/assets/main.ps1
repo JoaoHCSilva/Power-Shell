@@ -4,6 +4,7 @@
 $PSDefaultParameterValues['*:Encoding'] = 'utf8'
 Import-Module "$PSScriptRoot\module\viteInstal.psm1" -Force
 Import-Module "$PSScriptRoot\module\adicionarFiles.psm1" -Force
+Import-Module "$PSScriptRoot\module\routesModel.psm1" -Force
 function criarPastas() {
     param(
         [string]$nomeProjeto,
@@ -26,20 +27,26 @@ function criarPastas() {
     $pastas = @("Controllers", "Models", "Views", "Routes", "Services", "Helpers", "Config", "Database", "Middleware")
     foreach ($pasta in $pastas) {
         New-Item -Path "$caminho\$nomeProjeto" -Name "$pasta" -ItemType Directory | Out-Null 
+        Write-Host "Criando a pasta $pasta...`n" -ForegroundColor White
     }
+
+
+    # Navega para o caminho de instalacao
+    Set-Location -Path "$caminho\$nomeProjeto"
     # extensão do projeto
     $extensoes = @("js", "ts")
     $opcoes = [System.Management.Automation.Host.ChoiceDescription[]] @("&JavaScript", "&TypeScript")
-    $escolha = $host.UI.PromptForChoice("Extensão", "Selecione a linguagem do projeto:", $opcoes, 0)
+    $escolha = $host.UI.PromptForChoice("Selecione a linguagem do projeto:", $opcoes, 0)
     Write-Host "O projeto será desenvolvido com base em $($extensoes[$escolha])"
     $extensaoEscolhida = $extensoes[$escolha]
     
     # adiciona app.js ou app.ts
     $nomeArquiApp = "app.$extensaoEscolhida"
-
+    
     # adiciona os arquivos na pasta do projeto
     adicionarFiles -caminho $caminho -nomeProjeto $nomeProjeto -nomeArquiApp $nomeArquiApp
-
+    # Criando o arquivo router
+    routesModel -caminho "\$nomeProjeto\Routes" -extensao $extensaoEscolhida
     # Pergunta o template que será utilizado
     $templates = @("vanilla", "vanilla-ts", "vue", "vue-ts", "react", "react-ts", "preact", "lit", "svelte", "solid", "qwik")
     $opcoesTemplates = for ($i = 0; $i -lt $templates.Count; $i++) {
