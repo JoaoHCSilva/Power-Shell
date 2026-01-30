@@ -2,10 +2,17 @@
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 [Console]::InputEncoding = [System.Text.Encoding]::UTF8
 $PSDefaultParameterValues['*:Encoding'] = 'utf8'
-Import-Module "$PSScriptRoot\module\viteInstal.psm1" -Force
-Import-Module "$PSScriptRoot\module\adicionarFiles.psm1" -Force
-Import-Module "$PSScriptRoot\module\dependenciasModule.psm1" -Force
-Import-Module "$PSScriptRoot\module\routesModel.psm1" -Force
+
+if ($PSScriptRoot) {
+    $scriptDir = $PSScriptRoot
+}else {
+    $scriptDir = Split-Path -Parent ([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
+}
+
+Import-Module "$scriptDir\module\viteInstal.psm1" -Force
+Import-Module "$scriptDir\module\adicionarFiles.psm1" -Force
+Import-Module "$scriptDir\module\dependenciasModule.psm1" -Force
+Import-Module "$scriptDir\module\routesModel.psm1" -Force
 function criarPastas() {
     param(
         [string]$nomeProjeto,
@@ -51,8 +58,9 @@ function criarPastas() {
     routesModel -caminho "Routes" -extensao $extensaoEscolhida
     # Pergunta o template que será utilizado
     $templates = @("vanilla", "vanilla-ts", "vue", "vue-ts", "react", "react-ts", "preact", "lit", "svelte", "solid", "qwik")
+    $hotkeys = @("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11")
     $opcoesTemplates = for ($i = 0; $i -lt $templates.Count; $i++) {
-        New-Object System.Management.Automation.Host.ChoiceDescription ("&$($i + 1) $($templates[$i])", $templates[$i])
+        New-Object System.Management.Automation.Host.ChoiceDescription ("&$($hotkeys[$i]) $($templates[$i])", $templates[$i])
     }
     $escolha = $host.UI.PromptForChoice("Template", "Selecione o template do projeto:", $opcoesTemplates, 0)
     $templateEscolhido = $templates[$escolha]
@@ -71,6 +79,7 @@ function criarPastas() {
     Write-Host "2. Configure seu .env, crie uma copia comando=> cp .env.example .env" -ForegroundColor White
     Write-Host "3. Configure seu banco de dados" -ForegroundColor White
     Write-Host "Bom desenvolvimento :) " -ForegroundColor Green
+    Read-Host "Pressione Enter para sair"
 }
 
 criarPastas
