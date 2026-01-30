@@ -48,7 +48,8 @@ function New-DatabaseConfig {
 
 // Para MongoDB
 // npm install mongodb
-
+import dotenv from 'dotenv';
+dotenv.config();
 const dbConfig = {
     // SQLite
     sqlite: {

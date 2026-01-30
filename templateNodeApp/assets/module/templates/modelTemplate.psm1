@@ -30,7 +30,7 @@ function New-ExampleModel {
         [string]$extensao = "js"
     )
     
-    # Adiciona interface TypeScript se necessario
+    # Adiciona interface e tipagem TypeScript se necessario
     if ($extensao -eq "ts") {
         $interfaceUser = @"
 interface IUser {
@@ -43,9 +43,43 @@ interface IUser {
 }
 
 "@
+        $classProperties = @"
+    id?: number;
+    name: string;
+    email: string;
+    password?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+    
+"@
+        $constructorParam = "data: IUser"
+        $findAllReturn = ": Promise<User[]>"
+        $findByIdParam = "id: number"
+        $findByIdReturn = ": Promise<User | null>"
+        $findByEmailParam = "email: string"
+        $findByEmailReturn = ": Promise<User | null>"
+        $createParam = "data: IUser"
+        $createReturn = ": Promise<User>"
+        $updateParam = "data: Partial<IUser>"
+        $updateReturn = ": Promise<User>"
+        $deleteReturn = ": Promise<boolean>"
+        $implementsClause = " implements IUser"
     }
     else {
         $interfaceUser = ""
+        $classProperties = ""
+        $constructorParam = "data"
+        $findAllReturn = ""
+        $findByIdParam = "id"
+        $findByIdReturn = ""
+        $findByEmailParam = "email"
+        $findByEmailReturn = ""
+        $createParam = "data"
+        $createReturn = ""
+        $updateParam = "data"
+        $updateReturn = ""
+        $deleteReturn = ""
+        $implementsClause = ""
     }
     
     # Conteudo do Model
@@ -54,8 +88,8 @@ $interfaceUser/**
  * Model de exemplo para Usuario
  * Este e um exemplo basico. Em producao, use um ORM como Sequelize, TypeORM ou Prisma
  */
-class User {
-    constructor(data) {
+class User$implementsClause {
+$classProperties    constructor($constructorParam) {
         this.id = data.id;
         this.name = data.name;
         this.email = data.email;
@@ -67,7 +101,7 @@ class User {
     /**
      * Encontra todos os usuarios
      */
-    static async findAll() {
+    static async findAll()$findAllReturn {
         // TODO: Implementar busca no banco de dados
         return [];
     }
@@ -75,7 +109,7 @@ class User {
     /**
      * Encontra um usuario por ID
      */
-    static async findById(id) {
+    static async findById($findByIdParam)$findByIdReturn {
         // TODO: Implementar busca no banco de dados
         return null;
     }
@@ -83,7 +117,7 @@ class User {
     /**
      * Encontra um usuario por email
      */
-    static async findByEmail(email) {
+    static async findByEmail($findByEmailParam)$findByEmailReturn {
         // TODO: Implementar busca no banco de dados
         return null;
     }
@@ -91,7 +125,7 @@ class User {
     /**
      * Cria um novo usuario
      */
-    static async create(data) {
+    static async create($createParam)$createReturn {
         // TODO: Implementar criacao no banco de dados
         return new User(data);
     }
@@ -99,7 +133,7 @@ class User {
     /**
      * Atualiza o usuario
      */
-    async update(data) {
+    async update($updateParam)$updateReturn {
         // TODO: Implementar atualizacao no banco de dados
         Object.assign(this, data);
         this.updatedAt = new Date();
@@ -109,8 +143,8 @@ class User {
     /**
      * Remove o usuario
      */
-    async delete() {
-        // TODO: Implementar remocao no banco de dados
+    async delete()$deleteReturn {
+        // TODO: Implementar remocao do banco de dados
         return true;
     }
 }

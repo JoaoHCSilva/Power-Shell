@@ -37,10 +37,14 @@ function New-ExampleMiddleware {
     if ($extensao -eq "ts") {
         $tipoReqRes = "req: Request, res: Response, next: NextFunction"
         $importExpress = "import { Request, Response, NextFunction } from 'express';"
+        $errorHandlerParam = "err: any"
+        $returnType = ": void"
     }
     else {
         $tipoReqRes = "req, res, next"
         $importExpress = ""
+        $errorHandlerParam = "err"
+        $returnType = ""
     }
     
     # Conteudo dos Middlewares
@@ -50,7 +54,7 @@ $importExpress
 /**
  * Middleware de autenticacao de exemplo
  */
-export const authMiddleware = ($tipoReqRes) => {
+export const authMiddleware = ($tipoReqRes)$returnType => {
     const token = req.headers.authorization;
     
     if (!token) {
@@ -77,7 +81,7 @@ export const authMiddleware = ($tipoReqRes) => {
 /**
  * Middleware de log de requisicoes
  */
-export const logMiddleware = ($tipoReqRes) => {
+export const logMiddleware = ($tipoReqRes)$returnType => {
     const timestamp = new Date().toISOString();
     console.log('['+ timestamp + ']', req.method, req.path);
     next();
@@ -86,7 +90,7 @@ export const logMiddleware = ($tipoReqRes) => {
 /**
  * Middleware de validacao de dados
  */
-export const validateUser = ($tipoReqRes) => {
+export const validateUser = ($tipoReqRes)$returnType => {
     const { name, email } = req.body;
     
     if (!name || name.trim() === '') {
@@ -109,7 +113,7 @@ export const validateUser = ($tipoReqRes) => {
 /**
  * Middleware de tratamento de erros
  */
-export const errorHandler = (err, $tipoReqRes) => {
+export const errorHandler = ($errorHandlerParam, $tipoReqRes)$returnType => {
     console.error(err.stack);
     
     return res.status(err.status || 500).json({

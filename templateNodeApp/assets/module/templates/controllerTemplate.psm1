@@ -34,10 +34,14 @@ function New-ExampleController {
     if ($extensao -eq "ts") {
         $tipoReqRes = "req: Request, res: Response"
         $importExpress = "import { Request, Response } from 'express';"
+        $catchError = "catch (error: any)"
+        $returnType = ": Promise<void>"
     }
     else {
         $tipoReqRes = "req, res"
         $importExpress = ""
+        $catchError = "catch (error)"
+        $returnType = ""
     }
     
     # Conteudo do Controller
@@ -51,7 +55,7 @@ class UserController {
     /**
      * Lista todos os usuarios
      */
-    async index($tipoReqRes) {
+    async index($tipoReqRes)$returnType {
         try {
             // TODO: Buscar usuarios do banco de dados
             const users = [
@@ -63,7 +67,7 @@ class UserController {
                 success: true,
                 data: users
             });
-        } catch (error) {
+        } $catchError {
             return res.status(500).json({
                 success: false,
                 message: 'Erro ao buscar usuarios',
@@ -75,7 +79,7 @@ class UserController {
     /**
      * Busca um usuario especifico por ID
      */
-    async show($tipoReqRes) {
+    async show($tipoReqRes)$returnType {
         try {
             const { id } = req.params;
             
@@ -86,7 +90,7 @@ class UserController {
                 success: true,
                 data: user
             });
-        } catch (error) {
+        } $catchError {
             return res.status(500).json({
                 success: false,
                 message: 'Erro ao buscar usuario',
@@ -98,7 +102,7 @@ class UserController {
     /**
      * Cria um novo usuario
      */
-    async store($tipoReqRes) {
+    async store($tipoReqRes)$returnType {
         try {
             const { name, email } = req.body;
             
@@ -110,7 +114,7 @@ class UserController {
                 message: 'Usuario criado com sucesso',
                 data: newUser
             });
-        } catch (error) {
+        } $catchError {
             return res.status(500).json({
                 success: false,
                 message: 'Erro ao criar usuario',
@@ -122,7 +126,7 @@ class UserController {
     /**
      * Atualiza um usuario existente
      */
-    async update($tipoReqRes) {
+    async update($tipoReqRes)$returnType {
         try {
             const { id } = req.params;
             const { name, email } = req.body;
@@ -135,7 +139,7 @@ class UserController {
                 message: 'Usuario atualizado com sucesso',
                 data: updatedUser
             });
-        } catch (error) {
+        } $catchError {
             return res.status(500).json({
                 success: false,
                 message: 'Erro ao atualizar usuario',
@@ -147,7 +151,7 @@ class UserController {
     /**
      * Remove um usuario
      */
-    async destroy($tipoReqRes) {
+    async destroy($tipoReqRes)$returnType {
         try {
             const { id } = req.params;
             
@@ -157,7 +161,7 @@ class UserController {
                 success: true,
                 message: 'Usuario removido com sucesso'
             });
-        } catch (error) {
+        } $catchError {
             return res.status(500).json({
                 success: false,
                 message: 'Erro ao remover usuario',

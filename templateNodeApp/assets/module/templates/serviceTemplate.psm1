@@ -30,6 +30,22 @@ function New-ExampleService {
         [string]$extensao = "js"
     )
     
+    # Define tipagem baseada na extensao
+    if ($extensao -eq "ts") {
+        $getUserByIdParam = "id: number"
+        $createUserParam = "data: any"
+        $updateUserParams = "id: number, data: any"
+        $deleteUserParam = "id: number"
+        $errorType = ": any"
+    }
+    else {
+        $getUserByIdParam = "id"
+        $createUserParam = "data"
+        $updateUserParams = "id, data"
+        $deleteUserParam = "id"
+        $errorType = ""
+    }
+    
     # Conteudo do Service
     $conteudoService = @"
 import User from '../Models/User.$extensao';
@@ -49,7 +65,7 @@ class UserService {
                 success: true,
                 data: users
             };
-        } catch (error) {
+        } catch (error$errorType) {
             return {
                 success: false,
                 message: 'Erro ao buscar usuarios',
@@ -61,7 +77,7 @@ class UserService {
     /**
      * Busca um usuario por ID
      */
-    async getUserById(id) {
+    async getUserById($getUserByIdParam) {
         try {
             const user = await User.findById(id);
             
@@ -76,7 +92,7 @@ class UserService {
                 success: true,
                 data: user
             };
-        } catch (error) {
+        } catch (error$errorType) {
             return {
                 success: false,
                 message: 'Erro ao buscar usuario',
@@ -88,7 +104,7 @@ class UserService {
     /**
      * Cria um novo usuario
      */
-    async createUser(data) {
+    async createUser($createUserParam) {
         try {
             // Validacoes
             if (!data.name || !data.email) {
@@ -115,7 +131,7 @@ class UserService {
                 message: 'Usuario criado com sucesso',
                 data: user
             };
-        } catch (error) {
+        } catch (error$errorType) {
             return {
                 success: false,
                 message: 'Erro ao criar usuario',
@@ -127,7 +143,7 @@ class UserService {
     /**
      * Atualiza um usuario
      */
-    async updateUser(id, data) {
+    async updateUser($updateUserParams) {
         try {
             const user = await User.findById(id);
             
@@ -145,7 +161,7 @@ class UserService {
                 message: 'Usuario atualizado com sucesso',
                 data: user
             };
-        } catch (error) {
+        } catch (error$errorType) {
             return {
                 success: false,
                 message: 'Erro ao atualizar usuario',
@@ -157,7 +173,7 @@ class UserService {
     /**
      * Remove um usuario
      */
-    async deleteUser(id) {
+    async deleteUser($deleteUserParam) {
         try {
             const user = await User.findById(id);
             
@@ -174,7 +190,7 @@ class UserService {
                 success: true,
                 message: 'Usuario removido com sucesso'
             };
-        } catch (error) {
+        } catch (error$errorType) {
             return {
                 success: false,
                 message: 'Erro ao remover usuario',
