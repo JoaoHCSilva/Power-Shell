@@ -45,7 +45,7 @@ function criarPastas() {
     # adiciona os arquivos na pasta do projeto
     adicionarFiles -caminho $caminho -nomeProjeto $nomeProjeto -nomeArquiApp $nomeArquiApp
     # Criando o arquivo router
-    routesModel -caminho "\$nomeProjeto\Routes" -extensao $extensaoEscolhida
+    routesModel -caminho "Routes" -extensao $extensaoEscolhida
     # Pergunta o template que será utilizado
     $templates = @("vanilla", "vanilla-ts", "vue", "vue-ts", "react", "react-ts", "preact", "lit", "svelte", "solid", "qwik")
     $opcoesTemplates = for ($i = 0; $i -lt $templates.Count; $i++) {
@@ -56,13 +56,11 @@ function criarPastas() {
     Write-Host "O projeto será desenvolvido com base em $($templates[$escolha])" -ForegroundColor Yellow
 
     # nageva para a pasta do projeto
-    # Navega para o caminho de instalacao
-    Set-Location -Path "$caminho\$nomeProjeto"
     # inicia o vite
     instalarVite  $nomeProjeto $templateEscolhido
     Write-Host "Intalado Vite com sucesso!`n" -ForegroundColor Green
     # Fim do processo
-    Write-Host "Projeto: $nomeProjeto criado com sucesso!" -ForegroundColor  Green
+    Write-Host "Projeto $nomeProjeto criado com sucesso!" -ForegroundColor  Green
 }
 
 criarPastas
