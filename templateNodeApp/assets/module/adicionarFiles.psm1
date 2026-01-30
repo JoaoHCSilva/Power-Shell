@@ -3,13 +3,22 @@ function adicionarFiles() {
     param(
         [string]$caminho,
         [string]$nomeProjeto,
-        [string]$nomeArquiApp
+        [string]$nomeArquiApp,
+        [string]$extensao
     )
+
+
+if($extensao -eq "ts") {
+    $reqERes = "req: any, res: any"
+}
+elseif($extensao -eq "js") {
+    $reqERes = "req, res"
+}
 
     $dadosAppJs = @"
 import express from "express";
 import dotenv from "dotenv";
-import routes from "./routes/router.js";
+import routes from "./routes/router.$extensao";
 
 dotenv.config();
 
@@ -18,7 +27,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/", ($reqERes) => {
     res.send("Hello World!");
 });
 

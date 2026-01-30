@@ -5,7 +5,7 @@ function routesModel {
         [string]$extensao
     )
     if($extensao -eq "ts") {
-        $reqERes = "req: Any, res: Any"
+        $reqERes = "req: any, res: any"
     }
     elseif($extensao -eq "js") {
         $reqERes = "req, res"

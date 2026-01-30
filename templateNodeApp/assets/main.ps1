@@ -45,7 +45,7 @@ function criarPastas() {
     $nomeArquiApp = "app.$extensaoEscolhida"
     
     # adiciona os arquivos na pasta do projeto
-    adicionarFiles -caminho $caminho -nomeProjeto $nomeProjeto -nomeArquiApp $nomeArquiApp
+    adicionarFiles -caminho $caminho -nomeProjeto $nomeProjeto -nomeArquiApp $nomeArquiApp -extensao $extensaoEscolhida
     # Criando o arquivo router
     routesModel -caminho "Routes" -extensao $extensaoEscolhida
     # Pergunta o template que será utilizado
@@ -64,10 +64,9 @@ function criarPastas() {
     # Fim do processo
     Write-Host "Projeto $nomeProjeto criado com sucesso!" -ForegroundColor  Green
     Write-Host "Instrucoes de uso:" -ForegroundColor Yellow
-    Write-Host "1. Navegue até a pasta do projeto: cd $caminho\$nomeProjeto" -ForegroundColor White
-    Write-Host "2. Inicie o projeto: npm run dev" -ForegroundColor White
-    Write-Host "3. Configure seu .env, crie uma copia comando=> cp .env.example .env" -ForegroundColor White
-    Write-Host "4. Configure seu banco de dados" -ForegroundColor White
+    Write-Host "1. Inicie o projeto: npm run dev" -ForegroundColor White
+    Write-Host "2. Configure seu .env, crie uma copia comando=> cp .env.example .env" -ForegroundColor White
+    Write-Host "3. Configure seu banco de dados" -ForegroundColor White
     Write-Host "Bom desenvolvimento :) " -ForegroundColor Green
 }
 
