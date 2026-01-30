@@ -98,22 +98,6 @@ coverage/
     instalarVite  $nomeProjeto $templateEscolhido
     Write-Host "Instalado Vite com sucesso!" -ForegroundColor Green
     
-    # Adicionar scripts ao package.json
-    Write-Host "`nConfigurando scripts do package.json..." -ForegroundColor Cyan
-    $packageJsonPath = "package.json"
-    if (Test-Path $packageJsonPath) {
-        $packageJson = Get-Content $packageJsonPath -Raw | ConvertFrom-Json
-        
-        # Adicionar scripts úteis
-        $packageJson.scripts | Add-Member -MemberType NoteProperty -Name "backend" -Value "nodemon $nomeArquiApp" -Force
-        $packageJson.scripts | Add-Member -MemberType NoteProperty -Name "backend:prod" -Value "node $nomeArquiApp" -Force
-        $packageJson.scripts | Add-Member -MemberType NoteProperty -Name "start" -Value "concurrently \"npm run dev\" \"npm run backend\"" -Force
-        
-        # Salvar package.json atualizado
-        $packageJson | ConvertTo-Json -Depth 10 | Set-Content $packageJsonPath
-        Write-Host "Scripts adicionados ao package.json!" -ForegroundColor Green
-    }
-    
     # instala as dependecias do projeto
     installDependencies
     # Fim do processo
