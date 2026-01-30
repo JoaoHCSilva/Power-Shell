@@ -13,10 +13,10 @@ function routesModel {
 
     Write-Host "Iniciando a criacao do arquivo router.$extensao...`n" -ForegroundColor Yellow
     $dadosRouter = @"
-    import router from "express.Router()";
+    import { Router } from "express";
 
     //Suas rotas devem ser adicionadas aqui
-
+    const router = Router();
     router.get("/", ($reqERes) => {
         res.send("Rota Inicial");
     });

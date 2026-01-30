@@ -4,6 +4,7 @@
 $PSDefaultParameterValues['*:Encoding'] = 'utf8'
 Import-Module "$PSScriptRoot\module\viteInstal.psm1" -Force
 Import-Module "$PSScriptRoot\module\adicionarFiles.psm1" -Force
+Import-Module "$PSScriptRoot\module\dependenciasModule.psm1" -Force
 Import-Module "$PSScriptRoot\module\routesModel.psm1" -Force
 function criarPastas() {
     param(
@@ -61,6 +62,8 @@ function criarPastas() {
     # inicia o vite
     instalarVite  $nomeProjeto $templateEscolhido
     Write-Host "Instalado Vite com sucesso!" -ForegroundColor Green
+    # instala as dependecias do projeto
+    installDependencies
     # Fim do processo
     Write-Host "Projeto $nomeProjeto criado com sucesso!" -ForegroundColor  Green
     Write-Host "Instrucoes de uso:" -ForegroundColor Yellow
