@@ -49,8 +49,9 @@ function instalarVite {
     # volta para a pasta do projeto
     Set-Location ".."
     Write-Host "Voltando para a pasta do projeto..." -ForegroundColor White
-    # remove a pasta temporaria
-    Remove-Item -Path $pastaTemporaria\$nomeDoProjeto -Recurse -Force
+    # remove a pasta temporaria completamente
+    Remove-Item -Path $pastaTemporaria -Recurse -Force
+    Write-Host "Pasta temporária removida!" -ForegroundColor Green
 }
 
 Export-ModuleMember -Function instalarVite

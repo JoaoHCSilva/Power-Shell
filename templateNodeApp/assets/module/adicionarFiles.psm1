@@ -8,31 +8,41 @@ function adicionarFiles() {
     )
 
 
-if($extensao -eq "ts") {
-    $reqERes = "req: any, res: any"
-}
-elseif($extensao -eq "js") {
-    $reqERes = "req, res"
-}
+    if ($extensao -eq "ts") {
+        $reqERes = "req: any, res: any"
+    }
+    elseif ($extensao -eq "js") {
+        $reqERes = "req, res"
+    }
 
     $dadosAppJs = @"
 import express from "express";
 import dotenv from "dotenv";
-import routes from "./routes/router.$extensao";
+import routes from "./Routes/router.$extensao";
+import { errorHandler } from "./Middleware/middlewares.$extensao";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middlewares globais
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get("/", ($reqERes) => {
-    res.send("Hello World!");
-});
+// Usar as rotas
+app.use(routes);
+
+// Middleware de tratamento de erros (deve ser o último)
+app.use(errorHandler);
 
 app.listen(PORT, () => {
-    console.log("Server running on port " + PORT);
+    console.log("========================================");
+    console.log("  Servidor rodando com sucesso!");
+    console.log("========================================");
+    console.log("  URL: http://localhost:" + PORT);
+    console.log("  Ambiente: " + (process.env.NODE_ENV || "development"));
+    console.log("========================================");
 });
 
 "@
@@ -68,7 +78,7 @@ $ node app.js
 
 "@
 
-$envExample = @"
+    $envExample = @"
 PORT=3000
 
 DB_HOST=SQLITE

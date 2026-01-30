@@ -5,7 +5,8 @@ $PSDefaultParameterValues['*:Encoding'] = 'utf8'
 
 if ($PSScriptRoot) {
     $scriptDir = $PSScriptRoot
-}else {
+}
+else {
     $scriptDir = Split-Path -Parent ([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
 }
 
@@ -13,6 +14,7 @@ Import-Module "$scriptDir\module\viteInstal.psm1" -Force
 Import-Module "$scriptDir\module\adicionarFiles.psm1" -Force
 Import-Module "$scriptDir\module\dependenciasModule.psm1" -Force
 Import-Module "$scriptDir\module\routesModel.psm1" -Force
+Import-Module "$scriptDir\module\templateModule.psm1" -Force
 function criarPastas() {
     param(
         [string]$nomeProjeto,
@@ -23,7 +25,7 @@ function criarPastas() {
     $caminho = Read-Host "Digite o caminho do projeto"
     Write-Host "Iniciando a criacao de um novo projeto `nNome: $nomeProjeto `nCaminho: $caminho..." -ForegroundColor Green
 
-    if ((Test-path -Path $nomeProjeto)) {
+    if ((Test-path -Path "$caminho\$nomeProjeto")) {
         Write-host "O projeto já existe"
         return 
     }
@@ -54,8 +56,30 @@ function criarPastas() {
     
     # adiciona os arquivos na pasta do projeto
     adicionarFiles -caminho $caminho -nomeProjeto $nomeProjeto -nomeArquiApp $nomeArquiApp -extensao $extensaoEscolhida
+    
+    # Criando .gitignore
+    $gitignoreContent = @"
+node_modules/
+.env
+dist/
+build/
+*.log
+.DS_Store
+temp/
+coverage/
+.vscode/
+.idea/
+"@
+    New-Item -Path "$caminho\$nomeProjeto\.gitignore" -ItemType File -Value $gitignoreContent -Force | Out-Null
+    Write-Host "Criado .gitignore" -ForegroundColor Green
+    
     # Criando o arquivo router
     routesModel -caminho "Routes" -extensao $extensaoEscolhida
+    
+    # Criando arquivos de exemplo (templates)
+    $caminhoAtual = Get-Location
+    New-ProjectTemplates -caminho $caminhoAtual -extensao $extensaoEscolhida
+    
     # Pergunta o template que será utilizado
     $templates = @("vanilla", "vanilla-ts", "vue", "vue-ts", "react", "react-ts", "preact", "lit", "svelte", "solid", "qwik")
     $hotkeys = @("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K")
@@ -66,10 +90,26 @@ function criarPastas() {
     $templateEscolhido = $templates[$escolha]
     Write-Host "O projeto será desenvolvido com base no template: $($templates[$escolha])" -ForegroundColor Yellow
 
-    # nageva para a pasta do projeto
     # inicia o vite
     instalarVite  $nomeProjeto $templateEscolhido
     Write-Host "Instalado Vite com sucesso!" -ForegroundColor Green
+    
+    # Adicionar scripts ao package.json
+    Write-Host "`nConfigurando scripts do package.json..." -ForegroundColor Cyan
+    $packageJsonPath = "package.json"
+    if (Test-Path $packageJsonPath) {
+        $packageJson = Get-Content $packageJsonPath -Raw | ConvertFrom-Json
+        
+        # Adicionar scripts úteis
+        $packageJson.scripts | Add-Member -MemberType NoteProperty -Name "backend" -Value "nodemon $nomeArquiApp" -Force
+        $packageJson.scripts | Add-Member -MemberType NoteProperty -Name "backend:prod" -Value "node $nomeArquiApp" -Force
+        $packageJson.scripts | Add-Member -MemberType NoteProperty -Name "start" -Value "concurrently \"npm run dev\" \"npm run backend\"" -Force
+        
+        # Salvar package.json atualizado
+        $packageJson | ConvertTo-Json -Depth 10 | Set-Content $packageJsonPath
+        Write-Host "Scripts adicionados ao package.json!" -ForegroundColor Green
+    }
+    
     # instala as dependecias do projeto
     installDependencies
     # Fim do processo
