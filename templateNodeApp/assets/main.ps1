@@ -58,7 +58,7 @@ function criarPastas() {
     routesModel -caminho "Routes" -extensao $extensaoEscolhida
     # Pergunta o template que será utilizado
     $templates = @("vanilla", "vanilla-ts", "vue", "vue-ts", "react", "react-ts", "preact", "lit", "svelte", "solid", "qwik")
-    $hotkeys = @("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11")
+    $hotkeys = @("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K")
     $opcoesTemplates = for ($i = 0; $i -lt $templates.Count; $i++) {
         New-Object System.Management.Automation.Host.ChoiceDescription ("&$($hotkeys[$i]) $($templates[$i])", $templates[$i])
     }

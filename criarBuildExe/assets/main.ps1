@@ -60,4 +60,4 @@ function build-ps2exe {
 $InputFile = Read-Host "Digite o caminho do arquivo de entrada (.ps1)"
 $OutputFile = Read-Host "Digite o caminho do arquivo de saida (.exe)"
 
-build-ps2exe -InputFile $InputFile -OutputFile $OutputFile
+build-ps2exe -InputFile $InputFile -OutputFile $OutputFile -NestedModules .\module\*.psm1
