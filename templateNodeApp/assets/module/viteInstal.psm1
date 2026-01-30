@@ -29,7 +29,7 @@ function instalarVite {
         [string]$template = "vanilla"  # Opções: vanilla, vue, react, preact, lit, svelte, solid, qwik
     )
 
-    Write-Host "Instalando o Vite com a ultima versão . . ." -ForegroundColor white
+    Write-Host "Iniciando a instalacao do Vite com a ultima versão..." -ForegroundColor white
 
     # Cria uma pasta temporaria dentro do projeto
     $pastaTemporaria = "temp"
@@ -37,21 +37,20 @@ function instalarVite {
     # navega para o diretório dos arquivos temporarios
     Set-Location $pastaTemporaria
     # inicia o projeto com template especificado (sem interação)
-    npm create vite@latest $nomeDoProjeto -- --template $template
+    npm create vite@latest $nomeDoProjeto -y -- --template $template --no-interactive
 
     $origem = ".\$nomeDoProjeto"
     $destino = "..\"
 
+    Write-Host "Movendo os arquivos para a pasta do projeto..." -ForegroundColor Yellow
     # move todos os arquivos da pasta temporaria para a pasta do projeto
     Get-ChildItem -Path $origem -Force | Move-Item -Destination $destino -Force
-    Write-Host "Arquivos movidos com sucesso!`n" -ForegroundColor Green
+    Write-Host "Arquivos movidos com sucesso!" -ForegroundColor White
     # volta para a pasta do projeto
     Set-Location ".."
-    Write-Host "Voltando para a pasta do projeto...`n" -ForegroundColor Green
+    Write-Host "Voltando para a pasta do projeto..." -ForegroundColor White
     # remove a pasta temporaria
     Remove-Item -Path $pastaTemporaria\$nomeDoProjeto -Recurse -Force
-    Write-Host "Pasta temporaria removida com sucesso!`n" -ForegroundColor Green
-    
 }
 
 Export-ModuleMember -Function instalarVite

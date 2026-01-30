@@ -58,14 +58,25 @@ $ npm install
 $ node app.js
 
 "@
+
+$envExample = @"
+PORT=3000
+
+DB_HOST=SQLITE
+# DB_USER=
+# DB_PASSWORD=
+# DB_NAME=
+"@
     Write-Host "Iniciando criacao dos arquivos . . . `n"
     # Adicionando os arquivos a raiz do projeto
     New-Item -ItemType File -Path "$caminho" -Name $nomeArquiApp -Value $dadosAppJs | Out-Null
     Write-Host "Criado $nomeArquiApp ..." -ForegroundColor White
     New-Item -ItemType File -Path "$caminho" -Name "README.md" -Value $readmeMd | Out-Null
     Write-Host "Criado README.md ...`n" -ForegroundColor White
+    New-Item -ItemType File -Path "$caminho" -Name ".env.example" -Value $envExample | Out-Null
+    Write-Host "Criado .env.example ...`n" -ForegroundColor White
     Write-Host "Arquivos criados:`n" -ForegroundColor Yellow
-    foreach ($arquivo in @($nomeArquiApp, "README.md")) {
+    foreach ($arquivo in @($nomeArquiApp, "README.md", ".env.example")) {
         Write-Host " - $arquivo`n" -ForegroundColor White
     }
 

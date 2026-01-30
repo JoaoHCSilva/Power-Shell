@@ -23,10 +23,12 @@ function criarPastas() {
     if ((Test-Path -Path $caminho) -and !(Test-path -Path $nomeProjeto)) {
         New-Item -Path $caminho -Name $nomeProjeto -ItemType Directory | Out-Null
     }
+    Write-Host "Pastas criadas...`n" -ForegroundColor Yellow
     # Cria as subpastas
     $pastas = @("Controllers", "Models", "Views", "Routes", "Services", "Helpers", "Config", "Database", "Middleware")
     foreach ($pasta in $pastas) {
         New-Item -Path "$caminho\$nomeProjeto" -Name "$pasta" -ItemType Directory | Out-Null 
+        Write-Host "- $pasta" -ForegroundColor White
     }
 
 
@@ -35,7 +37,7 @@ function criarPastas() {
     # extensão do projeto
     $extensoes = @("js", "ts")
     $opcoes = [System.Management.Automation.Host.ChoiceDescription[]] @("&JavaScript", "&TypeScript")
-    $escolha = $host.UI.PromptForChoice("","Selecione a linguagem do projeto:", $opcoes, 0)
+    $escolha = $host.UI.PromptForChoice("", "Selecione a linguagem do projeto:", $opcoes, 0)
     Write-Host "O projeto será desenvolvido com base em $($extensoes[$escolha])"
     $extensaoEscolhida = $extensoes[$escolha]
     
@@ -53,14 +55,20 @@ function criarPastas() {
     }
     $escolha = $host.UI.PromptForChoice("Template", "Selecione o template do projeto:", $opcoesTemplates, 0)
     $templateEscolhido = $templates[$escolha]
-    Write-Host "O projeto será desenvolvido com base em $($templates[$escolha])" -ForegroundColor Yellow
+    Write-Host "O projeto será desenvolvido com base no template: $($templates[$escolha])" -ForegroundColor Yellow
 
     # nageva para a pasta do projeto
     # inicia o vite
     instalarVite  $nomeProjeto $templateEscolhido
-    Write-Host "Intalado Vite com sucesso!`n" -ForegroundColor Green
+    Write-Host "Instalado Vite com sucesso!" -ForegroundColor Green
     # Fim do processo
     Write-Host "Projeto $nomeProjeto criado com sucesso!" -ForegroundColor  Green
+    Write-Host "Instrucoes de uso:" -ForegroundColor Yellow
+    Write-Host "1. Navegue até a pasta do projeto: cd $caminho\$nomeProjeto" -ForegroundColor White
+    Write-Host "2. Inicie o projeto: npm run dev" -ForegroundColor White
+    Write-Host "3. Configure seu .env, crie uma copia comando=> cp .env.example .env" -ForegroundColor White
+    Write-Host "4. Configure seu banco de dados" -ForegroundColor White
+    Write-Host "Bom desenvolvimento :) " -ForegroundColor Green
 }
 
 criarPastas
