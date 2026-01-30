@@ -3,20 +3,20 @@
 Cria um Controller de exemplo para o projeto.
 
 .DESCRIPTION
-Este módulo cria um arquivo UserController com CRUD completo,
-incluindo métodos para listar, buscar, criar, atualizar e deletar usuários.
+Este modulo cria um arquivo UserController com CRUD completo,
+incluindo metodos para listar, buscar, criar, atualizar e deletar usuarios.
 
 .PARAMETER caminho
-O caminho raiz do projeto onde o Controller será criado.
+O caminho raiz do projeto onde o Controller sera criado.
 
 .PARAMETER extensao
-A extensão do arquivo (js ou ts).
+A extensao do arquivo (js ou ts).
 
 .EXAMPLE
 New-ExampleController -caminho "C:\meu-projeto" -extensao "js"
 
 .NOTES
-Autor: João Henrique
+Autor: Joao Henrique
 Data: 30/01/2026
 #>
 
@@ -30,7 +30,7 @@ function New-ExampleController {
         [string]$extensao = "js"
     )
     
-    # Define tipagem baseada na extensão
+    # Define tipagem baseada na extensao
     if ($extensao -eq "ts") {
         $tipoReqRes = "req: Request, res: Response"
         $importExpress = "import { Request, Response } from 'express';"
@@ -40,22 +40,22 @@ function New-ExampleController {
         $importExpress = ""
     }
     
-    # Conteúdo do Controller
+    # Conteudo do Controller
     $conteudoController = @"
 $importExpress
 
 /**
- * Controller de exemplo para gerenciar usuários
+ * Controller de exemplo para gerenciar usuarios
  */
 class UserController {
     /**
-     * Lista todos os usuários
+     * Lista todos os usuarios
      */
     async index($tipoReqRes) {
         try {
-            // TODO: Buscar usuários do banco de dados
+            // TODO: Buscar usuarios do banco de dados
             const users = [
-                { id: 1, name: 'João Silva', email: 'joao@example.com' },
+                { id: 1, name: 'Joao Silva', email: 'joao@example.com' },
                 { id: 2, name: 'Maria Santos', email: 'maria@example.com' }
             ];
             
@@ -66,21 +66,21 @@ class UserController {
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: 'Erro ao buscar usuários',
+                message: 'Erro ao buscar usuarios',
                 error: error.message
             });
         }
     }
     
     /**
-     * Busca um usuário específico por ID
+     * Busca um usuario especifico por ID
      */
     async show($tipoReqRes) {
         try {
             const { id } = req.params;
             
-            // TODO: Buscar usuário do banco de dados
-            const user = { id, name: 'João Silva', email: 'joao@example.com' };
+            // TODO: Buscar usuario do banco de dados
+            const user = { id, name: 'Joao Silva', email: 'joao@example.com' };
             
             return res.status(200).json({
                 success: true,
@@ -89,14 +89,14 @@ class UserController {
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: 'Erro ao buscar usuário',
+                message: 'Erro ao buscar usuario',
                 error: error.message
             });
         }
     }
     
     /**
-     * Cria um novo usuário
+     * Cria um novo usuario
      */
     async store($tipoReqRes) {
         try {
@@ -107,60 +107,60 @@ class UserController {
             
             return res.status(201).json({
                 success: true,
-                message: 'Usuário criado com sucesso',
+                message: 'Usuario criado com sucesso',
                 data: newUser
             });
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: 'Erro ao criar usuário',
+                message: 'Erro ao criar usuario',
                 error: error.message
             });
         }
     }
     
     /**
-     * Atualiza um usuário existente
+     * Atualiza um usuario existente
      */
     async update($tipoReqRes) {
         try {
             const { id } = req.params;
             const { name, email } = req.body;
             
-            // TODO: Atualizar usuário no banco de dados
+            // TODO: Atualizar usuario no banco de dados
             const updatedUser = { id, name, email };
             
             return res.status(200).json({
                 success: true,
-                message: 'Usuário atualizado com sucesso',
+                message: 'Usuario atualizado com sucesso',
                 data: updatedUser
             });
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: 'Erro ao atualizar usuário',
+                message: 'Erro ao atualizar usuario',
                 error: error.message
             });
         }
     }
     
     /**
-     * Remove um usuário
+     * Remove um usuario
      */
     async destroy($tipoReqRes) {
         try {
             const { id } = req.params;
             
-            // TODO: Remover usuário do banco de dados
+            // TODO: Remover usuario do banco de dados
             
             return res.status(200).json({
                 success: true,
-                message: 'Usuário removido com sucesso'
+                message: 'Usuario removido com sucesso'
             });
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: 'Erro ao remover usuário',
+                message: 'Erro ao remover usuario',
                 error: error.message
             });
         }
@@ -170,17 +170,26 @@ class UserController {
 export default new UserController();
 "@
 
-    # Cria o arquivo no diretório Controllers
+    # Cria o arquivo no diretorio Controllers
     $arquivoController = "UserController.$extensao"
-    $caminhoCompleto = "$caminho\Controllers\$arquivoController"
+    $pastaControllers = "$caminho\Controllers"
+    $caminhoCompleto = "$pastaControllers\$arquivoController"
+    
+    # Verifica se a pasta Controllers existe
+    if (-not (Test-Path -Path $pastaControllers)) {
+        Write-Host "  [AVISO] Pasta Controllers nao existe em: $pastaControllers" -ForegroundColor Yellow
+        Write-Host "  Criando pasta Controllers..." -ForegroundColor Yellow
+        New-Item -Path $pastaControllers -ItemType Directory -Force | Out-Null
+    }
     
     try {
         New-Item -Path $caminhoCompleto -ItemType File -Value $conteudoController -Force | Out-Null
-        Write-Host "  ✓ Controller criado: $arquivoController" -ForegroundColor Green
+        Write-Host "  [OK] Controller criado: $caminhoCompleto" -ForegroundColor Green
         return $true
     }
     catch {
-        Write-Host "  ✗ Erro ao criar Controller: $_" -ForegroundColor Red
+        Write-Host "  [ERRO] Erro ao criar Controller: $_" -ForegroundColor Red
+        Write-Host "  Caminho tentado: $caminhoCompleto" -ForegroundColor Red
         return $false
     }
 }

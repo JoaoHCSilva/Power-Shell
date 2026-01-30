@@ -3,23 +3,23 @@
 Cria Middlewares de exemplo para o projeto.
 
 .DESCRIPTION
-Este módulo cria um arquivo com 4 middlewares úteis:
-- authMiddleware: Autenticação com token
-- logMiddleware: Log de requisições
-- validateUser: Validação de dados de usuário
+Este modulo cria um arquivo com 4 middlewares uteis:
+- authMiddleware: Autenticacao com token
+- logMiddleware: Log de requisicoes
+- validateUser: Validacao de dados de usuario
 - errorHandler: Tratamento global de erros
 
 .PARAMETER caminho
-O caminho raiz do projeto onde os Middlewares serão criados.
+O caminho raiz do projeto onde os Middlewares serao criados.
 
 .PARAMETER extensao
-A extensão do arquivo (js ou ts).
+A extensao do arquivo (js ou ts).
 
 .EXAMPLE
 New-ExampleMiddleware -caminho "C:\meu-projeto" -extensao "ts"
 
 .NOTES
-Autor: João Henrique
+Autor: Joao Henrique
 Data: 30/01/2026
 #>
 
@@ -33,7 +33,7 @@ function New-ExampleMiddleware {
         [string]$extensao = "js"
     )
     
-    # Define tipagem baseada na extensão
+    # Define tipagem baseada na extensao
     if ($extensao -eq "ts") {
         $tipoReqRes = "req: Request, res: Response, next: NextFunction"
         $importExpress = "import { Request, Response, NextFunction } from 'express';"
@@ -43,12 +43,12 @@ function New-ExampleMiddleware {
         $importExpress = ""
     }
     
-    # Conteúdo dos Middlewares
+    # Conteudo dos Middlewares
     $conteudoMiddleware = @"
 $importExpress
 
 /**
- * Middleware de autenticação de exemplo
+ * Middleware de autenticacao de exemplo
  */
 export const authMiddleware = ($tipoReqRes) => {
     const token = req.headers.authorization;
@@ -56,7 +56,7 @@ export const authMiddleware = ($tipoReqRes) => {
     if (!token) {
         return res.status(401).json({
             success: false,
-            message: 'Token não fornecido'
+            message: 'Token nao fornecido'
         });
     }
     
@@ -69,13 +69,13 @@ export const authMiddleware = ($tipoReqRes) => {
     } catch (error) {
         return res.status(401).json({
             success: false,
-            message: 'Token inválido'
+            message: 'Token invalido'
         });
     }
 };
 
 /**
- * Middleware de log de requisições
+ * Middleware de log de requisicoes
  */
 export const logMiddleware = ($tipoReqRes) => {
     const timestamp = new Date().toISOString();
@@ -84,7 +84,7 @@ export const logMiddleware = ($tipoReqRes) => {
 };
 
 /**
- * Middleware de validação de dados
+ * Middleware de validacao de dados
  */
 export const validateUser = ($tipoReqRes) => {
     const { name, email } = req.body;
@@ -92,14 +92,14 @@ export const validateUser = ($tipoReqRes) => {
     if (!name || name.trim() === '') {
         return res.status(400).json({
             success: false,
-            message: 'Nome é obrigatório'
+            message: 'Nome e obrigatorio'
         });
     }
     
     if (!email || !email.includes('@')) {
         return res.status(400).json({
             success: false,
-            message: 'Email inválido'
+            message: 'Email invalido'
         });
     }
     
@@ -120,17 +120,26 @@ export const errorHandler = (err, $tipoReqRes) => {
 };
 "@
 
-    # Cria o arquivo no diretório Middleware
+    # Cria o arquivo no diretorio Middleware
     $arquivoMiddleware = "middlewares.$extensao"
-    $caminhoCompleto = "$caminho\Middleware\$arquivoMiddleware"
+    $pastaMiddleware = "$caminho\Middleware"
+    $caminhoCompleto = "$pastaMiddleware\$arquivoMiddleware"
+    
+    # Verifica se a pasta Middleware existe
+    if (-not (Test-Path -Path $pastaMiddleware)) {
+        Write-Host "  [AVISO] Pasta Middleware nao existe em: $pastaMiddleware" -ForegroundColor Yellow
+        Write-Host "  Criando pasta Middleware..." -ForegroundColor Yellow
+        New-Item -Path $pastaMiddleware -ItemType Directory -Force | Out-Null
+    }
     
     try {
         New-Item -Path $caminhoCompleto -ItemType File -Value $conteudoMiddleware -Force | Out-Null
-        Write-Host "  ✓ Middleware criado: $arquivoMiddleware" -ForegroundColor Green
+        Write-Host "  [OK] Middleware criado: $caminhoCompleto" -ForegroundColor Green
         return $true
     }
     catch {
-        Write-Host "  ✗ Erro ao criar Middleware: $_" -ForegroundColor Red
+        Write-Host "  [ERRO] Erro ao criar Middleware: $_" -ForegroundColor Red
+        Write-Host "  Caminho tentado: $caminhoCompleto" -ForegroundColor Red
         return $false
     }
 }

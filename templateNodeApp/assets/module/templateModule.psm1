@@ -1,21 +1,21 @@
-# Módulo agregador de templates
-# Este módulo importa e re-exporta todos os templates individuais
+# Modulo agregador de templates
+# Este modulo importa e re-exporta todos os templates individuais
 
 <#
 .SYNOPSIS
-Módulo principal para criação de templates de projeto.
+Modulo principal para criacao de templates de projeto.
 
 .DESCRIPTION
-Este módulo importa todos os templates individuais e fornece uma função
+Este modulo importa todos os templates individuais e fornece uma funcao
 conveniente para criar todos os templates de uma vez.
 
 .NOTES
-Autor: João Henrique
+Autor: Joao Henrique
 Data: 30/01/2026
-Versão: 2.0 - Refatorado em módulos separados
+Versao: 2.0 - Refatorado em modulos separados
 #>
 
-# Obtém o diretório do módulo atual
+# Obtem o diretorio do modulo atual
 if ($PSScriptRoot) {
     $moduleDir = $PSScriptRoot
 }
@@ -23,7 +23,7 @@ else {
     $moduleDir = Split-Path -Parent ([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
 }
 
-# Importa todos os módulos de template
+# Importa todos os modulos de template
 Import-Module "$moduleDir\templates\controllerTemplate.psm1" -Force
 Import-Module "$moduleDir\templates\modelTemplate.psm1" -Force
 Import-Module "$moduleDir\templates\serviceTemplate.psm1" -Force
@@ -35,21 +35,21 @@ Import-Module "$moduleDir\templates\databaseTemplate.psm1" -Force
 Cria todos os templates de projeto de uma vez.
 
 .DESCRIPTION
-Esta função conveniente cria todos os arquivos de exemplo:
-Controller, Model, Service, Middleware e configuração de banco de dados.
+Esta funcao conveniente cria todos os arquivos de exemplo:
+Controller, Model, Service, Middleware e configuracao de banco de dados.
 
 .PARAMETER caminho
-O caminho raiz do projeto onde os templates serão criados.
+O caminho raiz do projeto onde os templates serao criados.
 
 .PARAMETER extensao
-A extensão dos arquivos (js ou ts).
+A extensao dos arquivos (js ou ts).
 
 .EXAMPLE
 New-ProjectTemplates -caminho "C:\meu-projeto" -extensao "ts"
 
 .NOTES
-Esta função chama individualmente cada função de template.
-Se desejar criar apenas um tipo específico, use a função correspondente diretamente.
+Esta funcao chama individualmente cada funcao de template.
+Se desejar criar apenas um tipo especifico, use a funcao correspondente diretamente.
 #>
 function New-ProjectTemplates {
     param(
@@ -76,14 +76,14 @@ function New-ProjectTemplates {
     
     # Mensagem final
     if ($sucessos -eq $total) {
-        Write-Host "`n✓ Todos os templates criados com sucesso!`n" -ForegroundColor Green
+        Write-Host "`nTodos os templates criados com sucesso!`n" -ForegroundColor Green
         return $true
     }
     else {
-        Write-Host "`n⚠ $sucessos de $total templates criados com sucesso.`n" -ForegroundColor Yellow
+        Write-Host "`n$sucessos de $total templates criados com sucesso.`n" -ForegroundColor Yellow
         return $false
     }
 }
 
-# Exporta todas as funções (das submodules + a função agregadora)
+# Exporta todas as funcoes (das submodules + a funcao agregadora)
 Export-ModuleMember -Function New-ExampleController, New-ExampleModel, New-ExampleService, New-ExampleMiddleware, New-DatabaseConfig, New-ProjectTemplates

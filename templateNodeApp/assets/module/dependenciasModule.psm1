@@ -12,23 +12,23 @@ function installDependencies {
     $depDesenvolvimento = @("nodemon", "ts-node", "typescript", "@types/express", "@types/node")
     
     Write-Host "Instalando dependencias de producao..." -ForegroundColor Yellow
-    npm install $($depProducao -join " ")
+    npm install @depProducao -d
     
     if ($LASTEXITCODE -ne 0) {
         Write-Host "Erro ao instalar dependências de producao!" -ForegroundColor Red
-        return $false
+        return
     }
     
     Write-Host "Instalando dependencias de desenvolvimento..." -ForegroundColor Yellow
-    npm install --save-dev $($depDesenvolvimento -join " ")
+    npm install --save-dev @depDesenvolvimento
     
     if ($LASTEXITCODE -ne 0) {
         Write-Host "Erro ao instalar dependências de desenvolvimento!" -ForegroundColor Red
-        return $false
+        return
     }
     
     Write-Host "Dependecias instaladas com sucesso!" -ForegroundColor green
-    return $true
+    return
 }
 
 Export-ModuleMember -Function installDependencies  

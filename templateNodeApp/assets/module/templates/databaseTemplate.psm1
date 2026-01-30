@@ -1,22 +1,22 @@
 <#
 .SYNOPSIS
-Cria arquivo de configuração de banco de dados para o projeto.
+Cria arquivo de configuracao de banco de dados para o projeto.
 
 .DESCRIPTION
-Este módulo cria um arquivo database com configurações para
+Este modulo cria um arquivo database com configuracoes para
 SQLite, PostgreSQL, MySQL e MongoDB.
 
 .PARAMETER caminho
-O caminho raiz do projeto onde a configuração será criada.
+O caminho raiz do projeto onde a configuracao sera criada.
 
 .PARAMETER extensao
-A extensão do arquivo (js ou ts).
+A extensao do arquivo (js ou ts).
 
 .EXAMPLE
 New-DatabaseConfig -caminho "C:\meu-projeto" -extensao "js"
 
 .NOTES
-Autor: João Henrique
+Autor: Joao Henrique
 Data: 30/01/2026
 #>
 
@@ -30,11 +30,11 @@ function New-DatabaseConfig {
         [string]$extensao = "js"
     )
     
-    # Conteúdo da configuração de banco de dados
+    # Conteudo da configuracao de banco de dados
     $conteudoConfig = @"
 /**
- * Configuração de conexão com banco de dados
- * Este é um exemplo básico. Adapte conforme o banco de dados escolhido.
+ * Configuracao de conexao com banco de dados
+ * Este e um exemplo basico. Adapte conforme o banco de dados escolhido.
  */
 
 // Para SQLite (recomendado para desenvolvimento)
@@ -83,17 +83,26 @@ const dbConfig = {
 export default dbConfig;
 "@
 
-    # Cria o arquivo no diretório Config
+    # Cria o arquivo no diretorio Config
     $arquivoConfig = "database.$extensao"
-    $caminhoCompleto = "$caminho\Config\$arquivoConfig"
+    $pastaConfig = "$caminho\Config"
+    $caminhoCompleto = "$pastaConfig\$arquivoConfig"
+    
+    # Verifica se a pasta Config existe
+    if (-not (Test-Path -Path $pastaConfig)) {
+        Write-Host "  [AVISO] Pasta Config nao existe em: $pastaConfig" -ForegroundColor Yellow
+        Write-Host "  Criando pasta Config..." -ForegroundColor Yellow
+        New-Item -Path $pastaConfig -ItemType Directory -Force | Out-Null
+    }
     
     try {
         New-Item -Path $caminhoCompleto -ItemType File -Value $conteudoConfig -Force | Out-Null
-        Write-Host "  ✓ Configuração de banco criada: $arquivoConfig" -ForegroundColor Green
+        Write-Host "  [OK] Configuracao de banco criada: $caminhoCompleto" -ForegroundColor Green
         return $true
     }
     catch {
-        Write-Host "  ✗ Erro ao criar configuração de banco: $_" -ForegroundColor Red
+        Write-Host "  [ERRO] Erro ao criar configuracao de banco: $_" -ForegroundColor Red
+        Write-Host "  Caminho tentado: $caminhoCompleto" -ForegroundColor Red
         return $false
     }
 }

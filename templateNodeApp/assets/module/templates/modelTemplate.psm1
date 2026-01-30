@@ -3,20 +3,20 @@
 Cria um Model de exemplo para o projeto.
 
 .DESCRIPTION
-Este módulo cria um arquivo User model com métodos estáticos e de instância
-para operações básicas de banco de dados.
+Este modulo cria um arquivo User model com metodos estaticos e de instancia
+para operacoes basicas de banco de dados.
 
 .PARAMETER caminho
-O caminho raiz do projeto onde o Model será criado.
+O caminho raiz do projeto onde o Model sera criado.
 
 .PARAMETER extensao
-A extensão do arquivo (js ou ts).
+A extensao do arquivo (js ou ts).
 
 .EXAMPLE
 New-ExampleModel -caminho "C:\meu-projeto" -extensao "ts"
 
 .NOTES
-Autor: João Henrique
+Autor: Joao Henrique
 Data: 30/01/2026
 #>
 
@@ -30,7 +30,7 @@ function New-ExampleModel {
         [string]$extensao = "js"
     )
     
-    # Adiciona interface TypeScript se necessário
+    # Adiciona interface TypeScript se necessario
     if ($extensao -eq "ts") {
         $interfaceUser = @"
 interface IUser {
@@ -48,11 +48,11 @@ interface IUser {
         $interfaceUser = ""
     }
     
-    # Conteúdo do Model
+    # Conteudo do Model
     $conteudoModel = @"
 $interfaceUser/**
- * Model de exemplo para Usuário
- * Este é um exemplo básico. Em produção, use um ORM como Sequelize, TypeORM ou Prisma
+ * Model de exemplo para Usuario
+ * Este e um exemplo basico. Em producao, use um ORM como Sequelize, TypeORM ou Prisma
  */
 class User {
     constructor(data) {
@@ -65,7 +65,7 @@ class User {
     }
     
     /**
-     * Encontra todos os usuários
+     * Encontra todos os usuarios
      */
     static async findAll() {
         // TODO: Implementar busca no banco de dados
@@ -73,7 +73,7 @@ class User {
     }
     
     /**
-     * Encontra um usuário por ID
+     * Encontra um usuario por ID
      */
     static async findById(id) {
         // TODO: Implementar busca no banco de dados
@@ -81,7 +81,7 @@ class User {
     }
     
     /**
-     * Encontra um usuário por email
+     * Encontra um usuario por email
      */
     static async findByEmail(email) {
         // TODO: Implementar busca no banco de dados
@@ -89,28 +89,28 @@ class User {
     }
     
     /**
-     * Cria um novo usuário
+     * Cria um novo usuario
      */
     static async create(data) {
-        // TODO: Implementar criação no banco de dados
+        // TODO: Implementar criacao no banco de dados
         return new User(data);
     }
     
     /**
-     * Atualiza o usuário
+     * Atualiza o usuario
      */
     async update(data) {
-        // TODO: Implementar atualização no banco de dados
+        // TODO: Implementar atualizacao no banco de dados
         Object.assign(this, data);
         this.updatedAt = new Date();
         return this;
     }
     
     /**
-     * Remove o usuário
+     * Remove o usuario
      */
     async delete() {
-        // TODO: Implementar remoção no banco de dados
+        // TODO: Implementar remocao no banco de dados
         return true;
     }
 }
@@ -118,17 +118,26 @@ class User {
 export default User;
 "@
 
-    # Cria o arquivo no diretório Models
+    # Cria o arquivo no diretorio Models
     $arquivoModel = "User.$extensao"
-    $caminhoCompleto = "$caminho\Models\$arquivoModel"
+    $pastaModels = "$caminho\Models"
+    $caminhoCompleto = "$pastaModels\$arquivoModel"
+    
+    # Verifica se a pasta Models existe
+    if (-not (Test-Path -Path $pastaModels)) {
+        Write-Host "  [AVISO] Pasta Models nao existe em: $pastaModels" -ForegroundColor Yellow
+        Write-Host "  Criando pasta Models..." -ForegroundColor Yellow
+        New-Item -Path $pastaModels -ItemType Directory -Force | Out-Null
+    }
     
     try {
         New-Item -Path $caminhoCompleto -ItemType File -Value $conteudoModel -Force | Out-Null
-        Write-Host "  ✓ Model criado: $arquivoModel" -ForegroundColor Green
+        Write-Host "  [OK] Model criado: $caminhoCompleto" -ForegroundColor Green
         return $true
     }
     catch {
-        Write-Host "  ✗ Erro ao criar Model: $_" -ForegroundColor Red
+        Write-Host "  [ERRO] Erro ao criar Model: $_" -ForegroundColor Red
+        Write-Host "  Caminho tentado: $caminhoCompleto" -ForegroundColor Red
         return $false
     }
 }

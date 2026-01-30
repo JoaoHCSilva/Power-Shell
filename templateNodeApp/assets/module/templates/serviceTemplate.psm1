@@ -3,20 +3,20 @@
 Cria um Service de exemplo para o projeto.
 
 .DESCRIPTION
-Este módulo cria um arquivo UserService com lógica de negócio
-para gerenciamento de usuários.
+Este modulo cria um arquivo UserService com logica de negocio
+para gerenciamento de usuarios.
 
 .PARAMETER caminho
-O caminho raiz do projeto onde o Service será criado.
+O caminho raiz do projeto onde o Service sera criado.
 
 .PARAMETER extensao
-A extensão do arquivo (js ou ts).
+A extensao do arquivo (js ou ts).
 
 .EXAMPLE
 New-ExampleService -caminho "C:\meu-projeto" -extensao "js"
 
 .NOTES
-Autor: João Henrique
+Autor: Joao Henrique
 Data: 30/01/2026
 #>
 
@@ -30,17 +30,17 @@ function New-ExampleService {
         [string]$extensao = "js"
     )
     
-    # Conteúdo do Service
+    # Conteudo do Service
     $conteudoService = @"
 import User from '../Models/User.$extensao';
 
 /**
- * Service de exemplo para lógica de negócio de usuários
- * Services contêm a lógica de negócio e são chamados pelos Controllers
+ * Service de exemplo para logica de negocio de usuarios
+ * Services contem a logica de negocio e sao chamados pelos Controllers
  */
 class UserService {
     /**
-     * Lista todos os usuários
+     * Lista todos os usuarios
      */
     async getAllUsers() {
         try {
@@ -52,14 +52,14 @@ class UserService {
         } catch (error) {
             return {
                 success: false,
-                message: 'Erro ao buscar usuários',
+                message: 'Erro ao buscar usuarios',
                 error: error.message
             };
         }
     }
     
     /**
-     * Busca um usuário por ID
+     * Busca um usuario por ID
      */
     async getUserById(id) {
         try {
@@ -68,7 +68,7 @@ class UserService {
             if (!user) {
                 return {
                     success: false,
-                    message: 'Usuário não encontrado'
+                    message: 'Usuario nao encontrado'
                 };
             }
             
@@ -79,53 +79,53 @@ class UserService {
         } catch (error) {
             return {
                 success: false,
-                message: 'Erro ao buscar usuário',
+                message: 'Erro ao buscar usuario',
                 error: error.message
             };
         }
     }
     
     /**
-     * Cria um novo usuário
+     * Cria um novo usuario
      */
     async createUser(data) {
         try {
-            // Validações
+            // Validacoes
             if (!data.name || !data.email) {
                 return {
                     success: false,
-                    message: 'Nome e email são obrigatórios'
+                    message: 'Nome e email sao obrigatorios'
                 };
             }
             
-            // Verifica se o email já existe
+            // Verifica se o email ja existe
             const existingUser = await User.findByEmail(data.email);
             if (existingUser) {
                 return {
                     success: false,
-                    message: 'Email já cadastrado'
+                    message: 'Email ja cadastrado'
                 };
             }
             
-            // Cria o usuário
+            // Cria o usuario
             const user = await User.create(data);
             
             return {
                 success: true,
-                message: 'Usuário criado com sucesso',
+                message: 'Usuario criado com sucesso',
                 data: user
             };
         } catch (error) {
             return {
                 success: false,
-                message: 'Erro ao criar usuário',
+                message: 'Erro ao criar usuario',
                 error: error.message
             };
         }
     }
     
     /**
-     * Atualiza um usuário
+     * Atualiza um usuario
      */
     async updateUser(id, data) {
         try {
@@ -134,7 +134,7 @@ class UserService {
             if (!user) {
                 return {
                     success: false,
-                    message: 'Usuário não encontrado'
+                    message: 'Usuario nao encontrado'
                 };
             }
             
@@ -142,20 +142,20 @@ class UserService {
             
             return {
                 success: true,
-                message: 'Usuário atualizado com sucesso',
+                message: 'Usuario atualizado com sucesso',
                 data: user
             };
         } catch (error) {
             return {
                 success: false,
-                message: 'Erro ao atualizar usuário',
+                message: 'Erro ao atualizar usuario',
                 error: error.message
             };
         }
     }
     
     /**
-     * Remove um usuário
+     * Remove um usuario
      */
     async deleteUser(id) {
         try {
@@ -164,7 +164,7 @@ class UserService {
             if (!user) {
                 return {
                     success: false,
-                    message: 'Usuário não encontrado'
+                    message: 'Usuario nao encontrado'
                 };
             }
             
@@ -172,12 +172,12 @@ class UserService {
             
             return {
                 success: true,
-                message: 'Usuário removido com sucesso'
+                message: 'Usuario removido com sucesso'
             };
         } catch (error) {
             return {
                 success: false,
-                message: 'Erro ao remover usuário',
+                message: 'Erro ao remover usuario',
                 error: error.message
             };
         }
@@ -187,17 +187,26 @@ class UserService {
 export default new UserService();
 "@
 
-    # Cria o arquivo no diretório Services
+    # Cria o arquivo no diretorio Services
     $arquivoService = "UserService.$extensao"
-    $caminhoCompleto = "$caminho\Services\$arquivoService"
+    $pastaServices = "$caminho\Services"
+    $caminhoCompleto = "$pastaServices\$arquivoService"
+    
+    # Verifica se a pasta Services existe
+    if (-not (Test-Path -Path $pastaServices)) {
+        Write-Host "  [AVISO] Pasta Services nao existe em: $pastaServices" -ForegroundColor Yellow
+        Write-Host "  Criando pasta Services..." -ForegroundColor Yellow
+        New-Item -Path $pastaServices -ItemType Directory -Force | Out-Null
+    }
     
     try {
         New-Item -Path $caminhoCompleto -ItemType File -Value $conteudoService -Force | Out-Null
-        Write-Host "  ✓ Service criado: $arquivoService" -ForegroundColor Green
+        Write-Host "  [OK] Service criado: $caminhoCompleto" -ForegroundColor Green
         return $true
     }
     catch {
-        Write-Host "  ✗ Erro ao criar Service: $_" -ForegroundColor Red
+        Write-Host "  [ERRO] Erro ao criar Service: $_" -ForegroundColor Red
+        Write-Host "  Caminho tentado: $caminhoCompleto" -ForegroundColor Red
         return $false
     }
 }

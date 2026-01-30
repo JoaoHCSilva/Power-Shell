@@ -78,6 +78,10 @@ coverage/
     
     # Criando arquivos de exemplo (templates)
     $caminhoAtual = Get-Location
+    Write-Host "`nCriando templates no caminho: $caminhoAtual" -ForegroundColor Cyan
+    Write-Host "Verificando pastas existentes..." -ForegroundColor Gray
+    Get-ChildItem -Directory | Select-Object -ExpandProperty Name | ForEach-Object { Write-Host "  - $_" -ForegroundColor Gray }
+    
     New-ProjectTemplates -caminho $caminhoAtual -extensao $extensaoEscolhida
     
     # Pergunta o template que será utilizado
