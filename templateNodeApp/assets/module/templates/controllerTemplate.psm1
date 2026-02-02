@@ -47,6 +47,7 @@ function New-ExampleController {
     # Conteudo do Controller
     $conteudoController = @"
 $importExpress
+import UserService from '../Services/UserService';
 
 /**
  * Controller de exemplo para gerenciar usuarios
@@ -57,16 +58,13 @@ class UserController {
      */
     async index($tipoReqRes)$returnType {
         try {
-            // TODO: Buscar usuarios do banco de dados
-            const users = [
-                { id: 1, name: 'Joao Silva', email: 'joao@example.com' },
-                { id: 2, name: 'Maria Santos', email: 'maria@example.com' }
-            ];
+            const result = await UserService.getAllUsers();
             
-            return res.status(200).json({
-                success: true,
-                data: users
-            });
+            if (!result.success) {
+                return res.status(500).json(result);
+            }
+            
+            return res.status(200).json(result);
         } $catchError {
             return res.status(500).json({
                 success: false,
@@ -82,14 +80,13 @@ class UserController {
     async show($tipoReqRes)$returnType {
         try {
             const { id } = req.params;
+            const result = await UserService.getUserById(Number(id));
             
-            // TODO: Buscar usuario do banco de dados
-            const user = { id, name: 'Joao Silva', email: 'joao@example.com' };
+            if (!result.success) {
+                return res.status(404).json(result);
+            }
             
-            return res.status(200).json({
-                success: true,
-                data: user
-            });
+            return res.status(200).json(result);
         } $catchError {
             return res.status(500).json({
                 success: false,
@@ -105,15 +102,13 @@ class UserController {
     async store($tipoReqRes)$returnType {
         try {
             const { name, email } = req.body;
+            const result = await UserService.createUser({ name, email });
             
-            // TODO: Validar dados e salvar no banco
-            const newUser = { id: 3, name, email };
+            if (!result.success) {
+                return res.status(400).json(result);
+            }
             
-            return res.status(201).json({
-                success: true,
-                message: 'Usuario criado com sucesso',
-                data: newUser
-            });
+            return res.status(201).json(result);
         } $catchError {
             return res.status(500).json({
                 success: false,
@@ -130,15 +125,13 @@ class UserController {
         try {
             const { id } = req.params;
             const { name, email } = req.body;
+            const result = await UserService.updateUser(Number(id), { name, email });
             
-            // TODO: Atualizar usuario no banco de dados
-            const updatedUser = { id, name, email };
+            if (!result.success) {
+                return res.status(400).json(result);
+            }
             
-            return res.status(200).json({
-                success: true,
-                message: 'Usuario atualizado com sucesso',
-                data: updatedUser
-            });
+            return res.status(200).json(result);
         } $catchError {
             return res.status(500).json({
                 success: false,
@@ -154,13 +147,13 @@ class UserController {
     async destroy($tipoReqRes)$returnType {
         try {
             const { id } = req.params;
+            const result = await UserService.deleteUser(Number(id));
             
-            // TODO: Remover usuario do banco de dados
+            if (!result.success) {
+                return res.status(400).json(result);
+            }
             
-            return res.status(200).json({
-                success: true,
-                message: 'Usuario removido com sucesso'
-            });
+            return res.status(200).json(result);
         } $catchError {
             return res.status(500).json({
                 success: false,

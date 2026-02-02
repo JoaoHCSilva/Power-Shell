@@ -29,6 +29,10 @@ Import-Module "$moduleDir\templates\modelTemplate.psm1" -Force
 Import-Module "$moduleDir\templates\serviceTemplate.psm1" -Force
 Import-Module "$moduleDir\templates\middlewareTemplate.psm1" -Force
 Import-Module "$moduleDir\templates\databaseTemplate.psm1" -Force
+Import-Module "$moduleDir\templates\authTemplate.psm1" -Force
+Import-Module "$moduleDir\templates\validationTemplate.psm1" -Force
+Import-Module "$moduleDir\templates\loggerTemplate.psm1" -Force
+Import-Module "$moduleDir\templates\dockerTemplate.psm1" -Force
 
 <#
 .SYNOPSIS
@@ -65,7 +69,7 @@ function New-ProjectTemplates {
     
     # Contador de sucesso
     $sucessos = 0
-    $total = 5
+    $total = 10
     
     # Cria cada template
     if (New-ExampleController -caminho $caminho -extensao $extensao) { $sucessos++ }
@@ -73,6 +77,24 @@ function New-ProjectTemplates {
     if (New-ExampleService -caminho $caminho -extensao $extensao) { $sucessos++ }
     if (New-ExampleMiddleware -caminho $caminho -extensao $extensao) { $sucessos++ }
     if (New-DatabaseConfig -caminho $caminho -extensao $extensao) { $sucessos++ }
+    if (New-AuthModule -caminho $caminho -extensao $extensao) { $sucessos++ }
+    if (New-ValidationModule -caminho $caminho -extensao $extensao) { $sucessos++ }
+    if (New-LoggerModule -caminho $caminho -extensao $extensao) { $sucessos++ }
+    if (New-DockerConfig -caminho $caminho -extensao $extensao) { $sucessos++ }
+    
+    # Cria pasta logs
+    $logsPath = Join-Path $caminho "logs"
+    if (-not (Test-Path $logsPath)) {
+        try {
+            New-Item -Path $logsPath -ItemType Directory -Force | Out-Null
+            Write-Host "  [OK] Pasta logs criada" -ForegroundColor Green
+            $sucessos++
+        } catch {
+            Write-Host "  [AVISO] Não foi possível criar pasta logs" -ForegroundColor YellowAuthModule, New-ValidationModule, New-LoggerModule, New-DockerConfig, New-
+        }
+    } else {
+        $sucessos++
+    }
     
     # Mensagem final
     if ($sucessos -eq $total) {
