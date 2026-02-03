@@ -20,9 +20,9 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
-import routes from "./Routes/router";
-import { errorHandler } from "./Middleware/middlewares";
-import logger, { requestLogger } from "./Config/logger";
+import routes from "./Routes/router.$extensao";
+import { errorHandler } from "./Middleware/middlewares.$extensao";
+import logger, { requestLogger } from "./Config/logger.$extensao";
 
 dotenv.config();
 

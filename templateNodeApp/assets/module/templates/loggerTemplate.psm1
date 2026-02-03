@@ -31,7 +31,7 @@ function New-LoggerModule {
     )
     
     # Conteúdo do logger
-    $conteudoLogger = @"
+    $conteudoLogger = @'
 import winston from 'winston';
 import path from 'path';
 
@@ -51,7 +51,7 @@ const consoleFormat = winston.format.combine(
     winston.format.colorize(),
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     winston.format.printf(({ timestamp, level, message, ...meta }) => {
-        let msg = ''${timestamp}' [''${level}'] ''${message}';
+        let msg = `[${timestamp}] ${level}: ${message}`;
         if (Object.keys(meta).length > 0) {
             msg += ' ' + JSON.stringify(meta);
         }
@@ -101,7 +101,7 @@ export const requestLogger = (req, res, next) => {
             method: req.method,
             url: req.originalUrl,
             status: res.statusCode,
-            duration: ''${duration}ms',
+            duration: `${duration}ms`,
             ip: req.ip || req.connection.remoteAddress,
         });
     });
@@ -110,7 +110,7 @@ export const requestLogger = (req, res, next) => {
 };
 
 export default logger;
-"@
+'@
     
     # Cria o arquivo de logger
     $arquivoLogger = "logger.$extensao"

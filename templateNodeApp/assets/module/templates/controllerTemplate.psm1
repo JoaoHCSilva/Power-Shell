@@ -47,7 +47,7 @@ function New-ExampleController {
     # Conteudo do Controller
     $conteudoController = @"
 $importExpress
-import UserService from '../Services/UserService';
+import UserService from '../Services/UserService.$extensao';
 
 /**
  * Controller de exemplo para gerenciar usuarios
