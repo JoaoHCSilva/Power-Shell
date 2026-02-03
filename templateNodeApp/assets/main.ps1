@@ -74,7 +74,7 @@ function Test-ProjectName {
     # Valida caracteres inválidos para nomes de pasta/npm
     if ($name -match '[<>:"/\|?*]') {
         Write-Host "[ERRO] Nome do projeto contém caracteres inválidos." -ForegroundColor Red
-        Write-Host "Evite usar: < > : " / \ | ? *" -ForegroundColor Yellow
+        Write-Host "Evite usar: < > : " "/ \ | ? *" -ForegroundColor Yellow
         return $false
     }
     
