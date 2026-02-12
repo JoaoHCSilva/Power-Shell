@@ -16,6 +16,7 @@ Import-Module "$scriptDir\module\dependenciasModule.psm1" -Force
 Import-Module "$scriptDir\module\routesModel.psm1" -Force
 Import-Module "$scriptDir\module\templateModule.psm1" -Force
 Import-Module "$scriptDir\module\packageScriptsModule.psm1" -Force
+Import-Module "$scriptDir\module\templates\viewTemplate.psm1" -Force
 
 function Test-Prerequisites {
     Write-Host "Verificando pré-requisitos..." -ForegroundColor Cyan
@@ -163,6 +164,16 @@ function criarPastas() {
         }
     } catch {
         Write-Host "[ERRO] Falha ao criar subpastas: $_" -ForegroundColor Red
+        Remove-ProjectOnError -path $caminhoCompleto
+        Read-Host "Pressione Enter para sair"
+        return
+    }
+
+    # cria as subpastas de views
+    try {
+        viewTemplate -caminho "$caminho\$nomeProjeto"
+    } catch {
+        Write-Host "[ERRO] Falha ao criar subpastas de views: $_" -ForegroundColor Red
         Remove-ProjectOnError -path $caminhoCompleto
         Read-Host "Pressione Enter para sair"
         return
