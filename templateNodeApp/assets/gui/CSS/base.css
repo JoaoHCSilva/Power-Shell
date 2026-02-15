@@ -1,0 +1,115 @@
+/* base.css — Variáveis, reset e estilos globais */
+
+:root {
+    --bg-primary: #0d0d14;
+    --bg-secondary: #12121e;
+    --bg-card: rgba(22, 22, 36, 0.85);
+    --bg-card-hover: rgba(30, 30, 50, 0.9);
+    --bg-input: rgba(15, 15, 25, 0.8);
+
+    --text-primary: #e8e8f0;
+    --text-secondary: #8888a8;
+    --text-muted: #555570;
+    --text-hint: #6565a0;
+
+    --accent-primary: #7c5cff;
+    --accent-secondary: #5a9cff;
+    --accent-gradient: linear-gradient(135deg, #7c5cff, #5a9cff);
+    --accent-glow: rgba(124, 92, 255, 0.3);
+    --accent-success: #4cdd8a;
+    --accent-error: #ff5a6e;
+    --accent-warning: #ffb84d;
+
+    --border-color: rgba(100, 100, 160, 0.15);
+    --border-active: rgba(124, 92, 255, 0.5);
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 30px rgba(124, 92, 255, 0.15);
+
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 15px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-main);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Fundo com gradiente sutil */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(ellipse at 20% 0%, rgba(124, 92, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(90, 156, 255, 0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Main content */
+.main-content {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px 30px;
+}
+
+/* Step panels */
+.step-panel {
+    display: none;
+    animation: fadeSlideIn 0.4s ease;
+}
+
+.step-panel.active {
+    display: block;
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.pulsing {
+    animation: pulse 1.5s ease infinite;
+}

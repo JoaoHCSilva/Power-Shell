@@ -1,0 +1,31 @@
+/* footer.css — Footer e responsividade */
+
+.app-footer {
+    position: relative;
+    z-index: 1;
+    padding: 16px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    .option-grid {
+        grid-template-columns: 1fr;
+    }
+    .template-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .card-header, .card-body, .card-footer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .steps-indicator {
+        transform: scale(0.85);
+    }
+}

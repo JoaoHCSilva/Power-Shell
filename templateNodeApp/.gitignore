@@ -9,3 +9,9 @@
 # Cache do PowerShell
 *.pssc
 *.psm1_disabled
+
+# .NET / C# Build
+bin/
+obj/
+*.user
+*.suo

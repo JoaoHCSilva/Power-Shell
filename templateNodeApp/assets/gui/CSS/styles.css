@@ -1,0 +1,13 @@
+/* =============================================
+   TEMPLATE NODE APP - Design System
+   Ponto de entrada: importa todos os partials
+   ============================================= */
+
+@import url('base.css');
+@import url('header.css');
+@import url('steps-indicator.css');
+@import url('cards.css');
+@import url('buttons.css');
+@import url('options.css');
+@import url('terminal.css');
+@import url('footer.css');

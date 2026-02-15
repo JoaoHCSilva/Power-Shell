@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Node App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/styles.css">
+</head>
+<body>
+    <!-- ===== HEADER ===== -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">Template Node App</span>
+            </div>
+            <div class="header-badge">GUI Builder</div>
+        </div>
+    </header>
+
+    <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+    <main class="main-content">
+        <!-- Indicador de Steps -->
+        <div class="steps-indicator">
+            <div class="step-dot active" data-step="1">
+                <span class="step-number">1</span>
+                <span class="step-label">Projeto</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-dot" data-step="2">
+                <span class="step-number">2</span>
+                <span class="step-label">Linguagem</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-dot" data-step="3">
+                <span class="step-number">3</span>
+                <span class="step-label">Template</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-dot" data-step="4">
+                <span class="step-number">4</span>
+                <span class="step-label">Execução</span>
+            </div>
+        </div>
+
+        <!-- ===== STEP 1: Nome e Caminho ===== -->
+        <section class="step-panel active" id="step-1">
+            <div class="card">
+                <div class="card-header">
+                    <h2>📂 Configuração do Projeto</h2>
+                    <p class="card-description">Defina o nome e o local onde o projeto será criado.</p>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="nomeProjeto">Nome do Projeto</label>
+                        <input type="text" id="nomeProjeto" placeholder="meu-projeto-incrivel" autocomplete="off" spellcheck="false">
+                        <span class="input-hint">Use letras, números, hífens ou underscores</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="caminhoProjeto">Caminho de Destino</label>
+                        <div class="input-with-button">
+                            <input type="text" id="caminhoProjeto" placeholder="C:\Users\seu-usuario\projetos" autocomplete="off" spellcheck="false">
+                            <button type="button" class="btn btn-browse" onclick="selecionarPasta()" title="Procurar pasta">
+                                Caminho
+                            </button>
+                        </div>
+                        <span class="input-hint">A pasta será criada dentro deste caminho</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary" onclick="proximoStep(2)">
+                        Próximo
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== STEP 2: Linguagem ===== -->
+        <section class="step-panel" id="step-2">
+            <div class="card">
+                <div class="card-header">
+                    <h2>💻 Linguagem</h2>
+                    <p class="card-description">Escolha a linguagem principal do projeto.</p>
+                </div>
+                <div class="card-body">
+                    <div class="option-grid">
+                        <div class="option-card" data-value="0" onclick="selecionarOpcao(this, 'linguagem')">
+                            <div class="option-icon">🟨</div>
+                            <div class="option-title">JavaScript</div>
+                            <div class="option-desc">Flexível e amplamente usado</div>
+                        </div>
+                        <div class="option-card" data-value="1" onclick="selecionarOpcao(this, 'linguagem')">
+                            <div class="option-icon">🟦</div>
+                            <div class="option-title">TypeScript</div>
+                            <div class="option-desc">Tipagem forte e segurança</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-secondary" onclick="voltarStep(1)">
+                        <span class="btn-arrow">←</span>
+                        Voltar
+                    </button>
+                    <button class="btn btn-primary" onclick="proximoStep(3)" id="btnStep2" disabled>
+                        Próximo
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== STEP 3: Template ===== -->
+        <section class="step-panel" id="step-3">
+            <div class="card">
+                <div class="card-header">
+                    <h2>🎨 Template Vite</h2>
+                    <p class="card-description">Escolha o framework de frontend para o projeto.</p>
+                </div>
+                <div class="card-body">
+                    <div class="template-grid">
+                        <div class="option-card template-option" data-value="0" onclick="selecionarOpcao(this, 'template')">
+                            <div class="option-icon">📄</div>
+                            <div class="option-title">Vanilla</div>
+                        </div>
+                        <div class="option-card template-option" data-value="1" onclick="selecionarOpcao(this, 'template')">
+                            <div class="option-icon">📄</div>
+                            <div class="option-title">Vanilla TS</div>
+                        </div>
+                        <div class="option-card template-option" data-value="2" onclick="selecionarOpcao(this, 'template')">
+                            <div class="option-icon">💚</div>
+                            <div class="option-title">Vue</div>
+                        </div>
+                        <div class="option-card template-option" data-value="3" onclick="selecionarOpcao(this, 'template')">
+                            <div class="option-icon">💚</div>
+                            <div class="option-title">Vue TS</div>
+                        </div>
+                        <div class="option-card template-option" data-value="4" onclick="selecionarOpcao(this, 'template')">
+                            <div class="option-icon">⚛️</div>
+                            <div class="option-title">React</div>
+                        </div>
+                        <div class="option-card template-option" data-value="5" onclick="selecionarOpcao(this, 'template')">
+                            <div class="option-icon">⚛️</div>
+                            <div class="option-title">React TS</div>
+                        </div>
+                        <div class="option-card template-option" data-value="6" onclick="selecionarOpcao(this, 'template')">
+                            <div class="option-icon">⚡</div>
+                            <div class="option-title">Preact</div>
+                        </div>
+                        <div class="option-card template-option" data-value="7" onclick="selecionarOpcao(this, 'template')">
+                            <div class="option-icon">🔥</div>
+                            <div class="option-title">Lit</div>
+                        </div>
+                        <div class="option-card template-option" data-value="8" onclick="selecionarOpcao(this, 'template')">
+                            <div class="option-icon">🧡</div>
+                            <div class="option-title">Svelte</div>
+                        </div>
+                        <div class="option-card template-option" data-value="9" onclick="selecionarOpcao(this, 'template')">
+                            <div class="option-icon">💙</div>
+                            <div class="option-title">Solid</div>
+                        </div>
+                        <div class="option-card template-option" data-value="10" onclick="selecionarOpcao(this, 'template')">
+                            <div class="option-icon">🚀</div>
+                            <div class="option-title">Qwik</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-secondary" onclick="voltarStep(2)">
+                        <span class="btn-arrow">←</span>
+                        Voltar
+                    </button>
+                    <button class="btn btn-primary btn-execute" onclick="executarProjeto()" id="btnExecutar" disabled>
+                        🚀 Criar Projeto
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== STEP 4: Console de Execução ===== -->
+        <section class="step-panel" id="step-4">
+            <div class="card card-terminal">
+                <div class="card-header">
+                    <h2 id="execucaoTitulo">⏳ Criando Projeto...</h2>
+                    <p class="card-description" id="execucaoDesc">Aguarde enquanto o projeto é configurado.</p>
+                </div>
+                <div class="card-body">
+                    <!-- Barra de progresso -->
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="progress-text" id="progressText">Executando...</span>
+                    </div>
+
+                    <!-- Terminal de output -->
+                    <div class="terminal">
+                        <div class="terminal-header">
+                            <div class="terminal-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <span class="terminal-title">PowerShell Output</span>
+                        </div>
+                        <div class="terminal-body" id="terminalOutput">
+                            <div class="terminal-line">
+                                <span class="terminal-prompt">PS &gt;</span>
+                                <span>Aguardando início...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botões pós-conclusão (ficam ocultos até terminar) -->
+                <div class="card-footer conclusion-actions" id="conclusionActions" style="display: none;">
+                    <button class="btn btn-secondary" onclick="novoProjeto()">
+                        ➕ Novo Projeto
+                    </button>
+                    <button class="btn btn-primary" onclick="abrirPasta()" id="btnAbrirPasta">
+                        📂 Abrir Pasta
+                    </button>
+                    <button class="btn btn-accent" onclick="abrirTerminal()" id="btnAbrirTerminal">
+                        💻 Abrir Terminal
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="app-footer">
+        <span>Template Node App © 2026</span>
+        <span>•</span>
+        <span>Desenvolvido por João Henrique</span>
+    </footer>
+
+    <script type="module" src="../JS/app.js"></script>
+</body>
+</html>
