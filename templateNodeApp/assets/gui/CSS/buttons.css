@@ -1,0 +1,77 @@
+/* buttons.css — Estilos de botões */
+
+.btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-primary {
+    background: var(--accent-gradient);
+    color: #fff;
+    box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.btn-primary:hover:not(:disabled) {
+    box-shadow: 0 6px 24px rgba(124, 92, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1.5px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    border-color: var(--text-secondary);
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.btn-accent {
+    background: linear-gradient(135deg, var(--accent-success), #2aaa70);
+    color: #fff;
+}
+
+.btn-accent:hover {
+    box-shadow: 0 4px 16px rgba(76, 221, 138, 0.3);
+    transform: translateY(-1px);
+}
+
+.btn-execute {
+    padding: 14px 36px;
+    font-size: 1rem;
+}
+
+.btn-arrow {
+    font-size: 1.1rem;
+    transition: var(--transition);
+}
+
+.btn-primary:hover:not(:disabled) .btn-arrow {
+    transform: translateX(3px);
+}
+
+.btn-secondary:hover .btn-arrow {
+    transform: translateX(-3px);
+}

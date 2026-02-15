@@ -1,0 +1,61 @@
+/* options.css — Cards de seleção (linguagem e template) */
+
+.option-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+}
+
+.option-card {
+    padding: 24px 20px;
+    background: var(--bg-input);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    user-select: none;
+}
+
+.option-card:hover {
+    border-color: rgba(124, 92, 255, 0.3);
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+}
+
+.option-card.selected {
+    border-color: var(--accent-primary);
+    background: rgba(124, 92, 255, 0.1);
+    box-shadow: 0 0 24px var(--accent-glow), inset 0 0 24px rgba(124, 92, 255, 0.05);
+}
+
+.option-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.template-option .option-icon {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+}
+
+.option-title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.template-option .option-title {
+    font-size: 0.85rem;
+}
+
+.option-desc {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}

@@ -1,0 +1,51 @@
+/* header.css — Header e logo */
+
+.app-header {
+    position: relative;
+    z-index: 10;
+    padding: 16px 28px;
+    border-bottom: 1px solid var(--border-color);
+    background: rgba(13, 13, 20, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    font-size: 1.5rem;
+    filter: drop-shadow(0 0 8px rgba(124, 92, 255, 0.6));
+}
+
+.logo-text {
+    font-size: 1.15rem;
+    font-weight: 700;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.header-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent-primary);
+    padding: 4px 12px;
+    border: 1px solid rgba(124, 92, 255, 0.3);
+    border-radius: 20px;
+    background: rgba(124, 92, 255, 0.08);
+}
