@@ -91,7 +91,30 @@ Write-Host "========================================" -ForegroundColor Green
 Write-Host "  Release $tag publicada com sucesso!" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "O GitHub Actions vai buildar o .exe automaticamente." -ForegroundColor White
-Write-Host "Acompanhe em: https://github.com/JoaoHCSilva/Automa-o-Node/actions" -ForegroundColor Gray
-Write-Host "Download em:  https://github.com/JoaoHCSilva/Automa-o-Node/releases" -ForegroundColor Gray
+# Descobre a raiz do repo e o remote origin
+$repoRoot = (git rev-parse --show-toplevel 2>$null).Trim()
+$originUrl = (git remote get-url origin 2>$null).Trim()
+
+# Fallback caso nao esteja em um repo Git
+if (-not $repoRoot) {
+    $repoRoot = $PSScriptRoot
+}
+
+# Extrai owner/repo de URLs SSH ou HTTPS
+# Ex.: git@github.com:JoaoHCSilva/Automa-o-Node.git
+# Ex.: https://github.com/JoaoHCSilva/Automa-o-Node.git
+$slug = $null
+if ($originUrl -match "github\.com[:/](.+?)(\.git)?$") {
+    $slug = $matches[1]
+}
+
+Write-Host "Projeto: $repoRoot" -ForegroundColor Gray
+
+if ($slug) {
+    Write-Host "Acompanhe em: https://github.com/$slug/actions" -ForegroundColor Gray
+    Write-Host "Download em:  https://github.com/$slug/releases" -ForegroundColor Gray
+}
+else {
+    Write-Host "Remote origin nao identificado no GitHub." -ForegroundColor Yellow
+}
 Write-Host ""
