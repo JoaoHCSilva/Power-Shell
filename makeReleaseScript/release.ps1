@@ -5,7 +5,9 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$Versao,
 
-    [string]$Mensagem = "Release v$Versao"
+    [string]$Mensagem = "Release v$Versao",
+
+    [string]$Branch = "main"
 )
 
 $tag = "v$Versao"
@@ -13,8 +15,17 @@ $tag = "v$Versao"
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Publicando Release: $tag" -ForegroundColor Cyan
+Write-Host "  Branch: $Branch" -ForegroundColor Cyan
+Write-Host "  Mensagem: $Mensagem" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
+
+#Verifica se a branch existe
+$branchExiste = git ls-remote --heads origin $Branch 2>$null
+if (-not $branchExiste) {
+    Write-Host "[ERRO] O branch '$Branch' nao existe no repositorio remoto!" -ForegroundColor Red
+    exit 1
+}
 
 # Busca a última versão publicada no GitHub (via tags remotas)
 $tagsRemotas = git ls-remote --tags origin "refs/tags/v*" 2>$null |
@@ -72,7 +83,7 @@ git tag $tag
 
 # Push do código e da tag
 Write-Host "Enviando para o GitHub..." -ForegroundColor Yellow
-git push origin main
+git push origin $Branch
 git push origin $tag
 
 Write-Host ""
