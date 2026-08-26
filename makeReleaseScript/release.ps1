@@ -86,6 +86,31 @@ Write-Host "Enviando para o GitHub..." -ForegroundColor Yellow
 git push origin $Branch
 git push origin $tag
 
+# Pergunta se deseja usar um arquivo .md como descrição da Release
+$notasRelease = $Mensagem
+$respostaMd = Read-Host "Deseja enviar um arquivo .md como descricao da release? (S/N)"
+if ($respostaMd -match "^[Ss]") {
+    $caminhoMd = Read-Host "Informe o caminho do arquivo .md"
+    if (Test-Path $caminhoMd) {
+        $notasRelease = Get-Content -Path $caminhoMd -Raw
+    }
+    else {
+        Write-Host "[AVISO] Arquivo '$caminhoMd' nao encontrado. Usando a mensagem padrao como descricao." -ForegroundColor Yellow
+    }
+}
+
+# Cria a Release no GitHub via gh CLI
+if (Get-Command gh -ErrorAction SilentlyContinue) {
+    Write-Host "Criando Release no GitHub..." -ForegroundColor Yellow
+    $notasTmp = New-TemporaryFile
+    Set-Content -Path $notasTmp -Value $notasRelease -NoNewline
+    gh release create $tag --title $tag --notes-file $notasTmp --target $Branch
+    Remove-Item $notasTmp -Force
+}
+else {
+    Write-Host "[AVISO] GitHub CLI (gh) nao encontrado. Pulei a criacao da Release." -ForegroundColor Yellow
+}
+
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Green
 Write-Host "  Release $tag publicada com sucesso!" -ForegroundColor Green
